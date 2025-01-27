@@ -5,8 +5,9 @@
 
 
 /**
- * @param {Array<any>} promises - notice that input might contains non-promises
- * @return {Promise<Array<{status: 'fulfilled', value: any} | {status: 'rejected', reason: any}>>}
+ * @param {Array<any>} promises - An array of promises or values.
+ * @returns {Promise<any>} - A Promise that resolves with the value of the first promise that fulfills, 
+ *                          or rejects with an AggregateError if all promises are rejected.
  */
 function promise_any(promises) {
     if (promises.length === 0) {
@@ -35,8 +36,8 @@ function promise_any(promises) {
 
 const promise1 = Promise.reject(new Error("Promise 1 rejected"));
 const promise2 = Promise.reject(new Error("Promise 2 rejected"));
-const promise3 = Promise.reject(new Error("Promise 3 rejected"));
-// const promise4 = Promise.resolve("Success");
+// const promise3 = Promise.reject(new Error("Promise 3 rejected"));
+const promise3 = Promise.resolve("Success");
 
 promise_any([promise1, promise2, promise3])
     .then(value => console.log("Success:", value))
