@@ -14,7 +14,7 @@ const debounce = function (fn, delay) {
         // Clear any existing timeout, preventing multiple executions within the delay period.
         clearTimeout(timer);
 
-        time = setTimeout(() => {
+        timer = setTimeout(() => {
             // ensures that the original function is called 
             // with the correct this context and arguments.
             fn.apply(context, args);
