@@ -306,3 +306,118 @@ customPromise.resolve = function (promise) {
 customPromise.reject = function (promise) {
     return new customPromise((resolve, reject) => reject(promise));
 }
+
+
+// ***********************************************************************
+// Step 7: Adding status and result properties to our Promise
+
+function customPromise(executor) {
+    let onResolve, onReject,
+        isCalled = false, isFulfilled = false, isRejected = false,
+        output, err;
+
+    // Adding state and result properties
+    this.state = "pending";
+    this.result = undefined;
+
+    // Then function for handling successfull promise execution
+    this.then = function (resolveCallback) {
+        // Storing resolve callback function
+        onResolve = resolveCallback;
+
+        // Check if the promise has not yet resolved/rejected and executor isFulfilled
+        if (!isCalled && isFulfilled) {
+            // Mark the promise as resolved
+            isCalled = true;
+            onResolve(output);
+        }
+
+        // Returning this to enable chaining of then
+        return this;
+    }
+
+    // Catch function for handling errors in promise execution
+    this.catch = function (rejectCallback) {
+        // Storing reject callback function
+        onReject = rejectCallback;
+
+        if (!isCalled && isRejected) {
+            // Mark the promise as rejected
+            isCalled = true;
+            onReject(err);
+        }
+
+        // Returning this to enable chaining of catch
+        return this;
+    }
+
+    // Resolver function
+    function resolver(data) {
+        // Mark the isFulfilled flag as true since the executor work isFulfilled 
+        // and store result in output
+        isFulfilled = true;
+        output = data;
+
+        // Update state and result
+        this.state = "fulfilled";
+        this.result = data;
+
+        // Calling the resolve function with data
+        if (typeof onResolve === 'function' && !isCalled) {
+            isCalled = true;
+            onResolve(data);
+        }
+    }
+
+    // Rejecter function
+    function rejecter(error) {
+        // Mark the isRejected flag as true since the executor work isRejected 
+        // and store result in err
+        isRejected = true;
+        err = error;
+
+        // Update state and result
+        this.state = "rejected";
+        this.result = error;
+
+        // Calling the reject function with error
+        if (typeof onReject === 'function' && !isCalled) {
+            isCalled = true;
+            onReject(error);
+        }
+    }
+
+    // Bind resolver and rejecter to this context
+    resolver = resolver.bind(this);
+    rejecter = rejecter.bind(this);
+
+    // Define static methods if they don't exist
+    if (!customPromise.resolve) {
+        customPromise.resolve = function (promise) {
+            return new customPromise((resolve, reject) => resolve(promise));
+        }
+    }
+
+    if (!customPromise.reject) {
+        customPromise.reject = function (promise) {
+            return new customPromise((resolve, reject) => reject(promise));
+        }
+    }
+
+    // Calling the executor function with resolver and rejecter
+    executor(resolver, rejecter);
+}
+
+// Test Case :
+let tpf = new customPromise(
+    (resolve, reject) => setTimeout(() => {
+        console.log("Before promise resolved : ", tpf.state, tpf.result);
+        resolve('Resolved successfully');
+        console.log("After promise resolved : ", tpf.state, tpf.result);
+    }, 1000)
+);
+tpf.then((data) => console.log(data));
+// Output - 
+// Before promise resolved : pending undefined
+// Resolved successfully 
+// After promise resolved : fulfilled Resolved successfully
