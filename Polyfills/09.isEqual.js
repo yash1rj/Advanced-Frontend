@@ -1,6 +1,23 @@
 // _.isEqual is useful when we want to compare complex data types by value not the reference.
 
-function isEqual(firstItem, secondItem) {
+
+// ***********************************************************************
+// Circular References
+// We use a Map called visited to track objects we've already encountered 
+// to handle circular references.
+
+// Circular references occur when an object refers to itself 
+// or has nested objects that refer back to it. 
+// Without this check, the recursion would loop infinitely.
+
+// if (visited.has(a)) {
+//     return isEqual(visited.get(a), b, visited);
+// }
+// visited.set(a, b);
+
+
+// ***********************************************************************
+function isEqual(firstItem, secondItem, visited = new Map()) {
     // Type checking
     if (typeof firstItem !== typeof secondItem) return false;
 
@@ -17,7 +34,16 @@ function isEqual(firstItem, secondItem) {
     if (firstItem === 'null' || secondItem === 'null') return firstItem === secondItem;
 
     // Non-primitive data types (objects, arrays, maps, etc.)
-    if (typeof a === 'object' && typeof b === 'object') {
+    if (typeof firstItem === 'object' && typeof secondItem === 'object') {
+        // Circular reference check: 
+        // If we've already encountered 'firstItem' before, skip to avoid infinite recursion
+        if (visited.has(firstItem)) {
+            // Compare previously visited object with 'secondItem'
+            return isEqual(visited.get(firstItem), secondItem, visited);
+        }
+        // Mark 'firstItem' as visited to handle circular references
+        visited.set(firstItem, secondItem);
+
         // Date
         if (firstItem instanceof Date) {
             return secondItem instanceof Date && firstItem.toString() === secondItem.toString();
@@ -35,11 +61,46 @@ function isEqual(firstItem, secondItem) {
                 && (firstItem.message === secondItem.message);
         }
 
+        // Map comparison: 
+        // Check if both 'firstItem' and 'secondItem' are Map objects, and compare their size and key-value pairs
+        if (firstItem instanceof Map) {
+            if (!(secondItem instanceof Map) || firstItem.size !== secondItem.size) {
+                return false; // If 'secondItem' is not a Map or the sizes don't match, return false
+            }
+            // Iterate over each key-value pair in 'a' and compare with 'b'
+            for (let [key, val] of firstItem) {
+                if (!secondItem.has(key) || !isEqual(val, secondItem.get(key), visited)) {
+                    return false; // If key is missing or values don't match, return false
+                }
+            }
+            return true;
+        }
+
+        // Set comparison: 
+        // Check if both 'firstItem' and 'secondItem' are Set objects, and compare their size and elements
+        if (firstItem instanceof Set) {
+            if (!(secondItem instanceof Set) || firstItem.size !== secondItem.size) {
+                return false; // If 'secondItem' is not a Set or the sizes don't match, return false
+            }
+            // Iterate over elements of 'firstItem' and check if each element is present in 'secondItem'
+            for (let val of firstItem) {
+                let found = false;
+                for (let valB of secondItem) {
+                    if (isEqual(val, valB, visited)) {
+                        found = true; // If element is found, break the inner loop
+                        break;
+                    }
+                }
+                if (!found) return false; // If element is not found in 'secondItem', return false
+            }
+            return true;
+        }
+
         // Array
         if (Array.isArray(firstItem) && Array.isArray(secondItem)) {
             if (firstItem.length !== secondItem.length) return false;
             for (let i = 0; i < firstItem.length; i++) {
-                if (!isEqual(firstItem[i], secondItem[i])) return false;
+                if (!isEqual(firstItem[i], secondItem[i], visited)) return false;
             }
             return true;
         }
@@ -54,7 +115,7 @@ function isEqual(firstItem, secondItem) {
             if (objOneKeys.length !== objTwoKeys.length) return false;
             for (const key of objOneKeys) {
                 if (objTwoKeys.indexOf(key) === -1) return false;
-                if (!isEqual(firstItem[key], secondItem[key])) return false;
+                if (!isEqual(firstItem[key], secondItem[key], visited)) return false;
             }
             return true;
         }
