@@ -67,7 +67,7 @@ function isEqual(firstItem, secondItem, visited = new Map()) {
             if (!(secondItem instanceof Map) || firstItem.size !== secondItem.size) {
                 return false; // If 'secondItem' is not a Map or the sizes don't match, return false
             }
-            // Iterate over each key-value pair in 'a' and compare with 'b'
+            // Iterate over each key-value pair in 'firstItem' and compare with 'secondItem'
             for (let [key, val] of firstItem) {
                 if (!secondItem.has(key) || !isEqual(val, secondItem.get(key), visited)) {
                     return false; // If key is missing or values don't match, return false
