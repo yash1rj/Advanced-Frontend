@@ -8,28 +8,31 @@ const obj = {
             c: [1, 2, 3]
         }
     }
-}
+};
 
 // get(obj, 'a.b.c') // [1,2,3]
 // get(obj, 'a.b.c.0') // 1
 // get(obj, 'a.b.c[1]') // 2
 // get(obj, ['a', 'b', 'c', '2']) // 3
 // get(obj, 'a.b.c[3]') // undefined
-// get(obj, 'a.c', 'bfe') // 'bfe'
+// get(obj, 'a.c', 'apple') // 'apple'
 
 
+// ***********************************************************************
 /**
  * @param {object} source
  * @param {string | string[]} path
  * @param {any} [defaultValue]
  * @return {any}
  */
-function get(source, path, defaultValue = undefined) {
+function lodashGet(source, path, defaultValue = undefined) {
     // get array of string properties, no special chars
-    const pathArr = Array.isArray(path) ? path : path
-        .replaceAll("[", ".")
-        .replaceAll("]", "")
-        .split(".");
+    const pathArr = Array.isArray(path)
+        ? path
+        : path
+            .replaceAll("[", ".")
+            .replaceAll("]", "")
+            .split(".");
 
     if (pathArr.length === 0) {
         return defaultValue;
@@ -46,9 +49,9 @@ function get(source, path, defaultValue = undefined) {
     return source;
 }
 
-console.log(get(obj, 'a.b.c')); // [1,2,3]
-console.log(get(obj, 'a.b.c.0')); // 1
-console.log(get(obj, 'a.b.c[1]')); // 2
-console.log(get(obj, ['a', 'b', 'c', '2'])); // 3
-console.log(get(obj, 'a.b.c[3]')); // undefined
-console.log(get(obj, 'a.c', 'bfe')); // 'bfe'
+console.log(lodashGet(obj, 'a.b.c')); // [1,2,3]
+console.log(lodashGet(obj, 'a.b.c.0')); // 1
+console.log(lodashGet(obj, 'a.b.c[1]')); // 2
+console.log(lodashGet(obj, ['a', 'b', 'c', '2'])); // 3
+console.log(lodashGet(obj, 'a.b.c[3]')); // undefined
+console.log(lodashGet(obj, 'a.c', 'apple')); // 'apple'
