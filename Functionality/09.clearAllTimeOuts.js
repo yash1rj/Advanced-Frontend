@@ -13,6 +13,8 @@
 // let’s say in an array. For which we will override the existing setTimeout method 
 // and collect all the timeoutIds in an array.
 
+
+// ***********************************************************************
 window.timeoutIds = [];
 
 // store the original method

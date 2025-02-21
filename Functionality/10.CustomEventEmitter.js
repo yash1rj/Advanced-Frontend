@@ -21,6 +21,8 @@
 // Or a radio station broadcasting on different frequencies - only receivers tuned 
 // to that frequency pick up the signal
 
+
+// ***********************************************************************
 /**
  * Simple Event Emitter Implementation
  */
@@ -126,6 +128,8 @@ class EventEmitter {
     }
 }
 
+
+// ***********************************************************************
 // Usage examples
 const emitter = new EventEmitter();
 
