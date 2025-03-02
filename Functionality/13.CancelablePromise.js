@@ -447,3 +447,46 @@ runV2Example();
 // This implementation now more closely matches how AbortController 
 // works in modern browsers with fetch requests. 
 // The underlying operations are truly aborted rather than just having their results ignored.
+
+
+// ***********************************************************************
+// We can make one more modification to make the code more leaner
+
+function createCancelController() {
+    let rejectPlaceholder;
+    const controller = {
+        isCanceled: false,
+        signal: new Promise((_, reject) => { rejectPlaceholder = reject; })
+    };
+
+    controller.cancel = () => {
+        controller.isCanceled = true;
+        rejectPlaceholder(new Error("Operation canceled"));
+    };
+
+    return controller;
+}
+
+async function cancelable3(asyncFn, controller) {
+    // Create a race between our function and the cancel signal
+    try {
+        // We use Promise.race to compete between:
+        // 1. Our async function (which receives the controller)
+        // 2. The cancellation signal (which rejects when canceled)
+        return await Promise.race([
+            asyncFn(controller),
+            controller.signal
+        ]);
+    } catch (error) {
+        // If either promise rejects, we'll end up here
+        if (controller.isCanceled) {
+            throw new Error("Operation canceled");
+        }
+        // Otherwise, pass through the original error
+        throw error;
+    }
+}
+
+// The fetchData method or the async method to be wrapped with cancelable will remain same :
+// - Usage of  if (!controller.isCanceled) consition while resolving response
+// - Usage of controller.signal.catch method to set up cleanup for cancellation
