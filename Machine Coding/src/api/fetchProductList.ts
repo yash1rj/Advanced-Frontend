@@ -11,3 +11,13 @@ export const fetchProductList = async (query: string) => {
     throw new Error();
   }
 };
+
+export const fetchAllProductList = async () => {
+  try {
+    const rawResults = await fetch(`https://dummyjson.com/products`);
+    const resultsJson = await rawResults.json();
+    return resultsJson.products;
+  } catch (error) {
+    throw new Error();
+  }
+};
