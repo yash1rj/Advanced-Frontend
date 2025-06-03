@@ -6,9 +6,11 @@ import {
   PaginationContainer,
   ProductList,
 } from "./PaginatedDataStyles";
+import usePagination from "../../hooks/usePagination";
 
 const paginationConfig = {
   pageSize: 5,
+  DOTS: "...",
 };
 
 const PaginatedData = () => {
@@ -23,6 +25,11 @@ const PaginatedData = () => {
       Math.ceil(list.length / paginationConfig.pageSize) as number,
     ];
   }, [list, currentPage]);
+
+  const paginationRange = usePagination({
+    currentPage,
+    totalPageCount: totalPages,
+  });
 
   const handleFirstPageNav = () => setCurrentPage(0);
   const handlePrevPageNav = () => setCurrentPage((prevPage) => prevPage - 1);
@@ -83,14 +90,25 @@ const PaginatedData = () => {
             >
               ◀️
             </PaginationBlocks>
-            {new Array(totalPages).fill(0)?.map((page, idx) => (
-              <PaginationBlocks
-                key={idx}
-                onClick={() => handleSpecificPageNav(idx)}
-              >
-                {idx + 1}
-              </PaginationBlocks>
-            ))}
+            {paginationRange?.map((pageNumber: number | string, idx) => {
+              if (pageNumber === paginationConfig.DOTS) {
+                return (
+                  <PaginationBlocks isDots={true} key={idx}>
+                    ...
+                  </PaginationBlocks>
+                );
+              }
+
+              return (
+                <PaginationBlocks
+                  key={idx}
+                  onClick={() => handleSpecificPageNav(idx)}
+                  selected={currentPage === idx}
+                >
+                  {idx + 1}
+                </PaginationBlocks>
+              );
+            })}
             <PaginationBlocks
               disabled={currentPage === totalPages - 1}
               onClick={handleNextPageNav}
