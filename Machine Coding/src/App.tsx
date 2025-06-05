@@ -1,6 +1,8 @@
 import "./App.css";
+import FolderExplorer from "./components/FolderExplorer/FolderExplorer";
+import { foldersData } from "./components/FolderExplorer/foldersData";
 // import DebouncedSearch from "./components/DebouncedSearch/DebouncedSearch";
-import PaginatedData from "./components/PaginatedData/PaginatedData";
+// import PaginatedData from "./components/PaginatedData/PaginatedData";
 // import Rating from "./components/Rating/Rating";
 
 function App() {
@@ -8,7 +10,8 @@ function App() {
     <>
       {/* <DebouncedSearch />
       <Rating /> */}
-      <PaginatedData />
+      {/* <PaginatedData /> */}
+      <FolderExplorer folderStructure={foldersData} />
     </>
   );
 }
