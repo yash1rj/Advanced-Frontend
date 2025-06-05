@@ -11,7 +11,7 @@ function App() {
       {/* <DebouncedSearch />
       <Rating /> */}
       {/* <PaginatedData /> */}
-      <FolderExplorer folderStructure={foldersData} />
+      <FolderExplorer folderDirectory={foldersData} />
     </>
   );
 }
