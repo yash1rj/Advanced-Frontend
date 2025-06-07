@@ -1,5 +1,6 @@
 import "./App.css";
-import DynamicFormFields from "./components/DynamicFormFields/DynamicFormFields";
+// import DynamicFormFields from "./components/DynamicFormFields/DynamicFormFields";
+import ProgressBar from "./components/ProgressBar/ProgressBar";
 // import FolderExplorer from "./components/FolderExplorer/FolderExplorer";
 // import { foldersData } from "./components/FolderExplorer/foldersData";
 // import ToDoList from "./components/ToDoList/ToDoList";
@@ -15,7 +16,8 @@ function App() {
       {/* <PaginatedData /> */}
       {/* <FolderExplorer folderDirectory={foldersData} /> */}
       {/* <ToDoList /> */}
-      <DynamicFormFields />
+      {/* <DynamicFormFields /> */}
+      <ProgressBar />
     </>
   );
 }
