@@ -1,5 +1,6 @@
 import "./App.css";
-import CustomModal from "./components/CustomModal/CustomModal";
+// import CustomModal from "./components/CustomModal/CustomModal";
+import TransferList from "./components/TransferList/TransferList";
 // import DynamicFormFields from "./components/DynamicFormFields/DynamicFormFields";
 // import ProgressBar from "./components/ProgressBar/ProgressBar";
 // import FolderExplorer from "./components/FolderExplorer/FolderExplorer";
@@ -19,7 +20,8 @@ function App() {
       {/* <ToDoList /> */}
       {/* <DynamicFormFields /> */}
       {/* <ProgressBar /> */}
-      <CustomModal />
+      {/* <CustomModal /> */}
+      <TransferList />
     </>
   );
 }
