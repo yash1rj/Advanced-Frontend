@@ -15,7 +15,7 @@ Array.prototype.ourForEach = function (callBack) {
     }
 
     if (this === null || this === undefined) {
-        throw new TypeError("Cannot reduce array on null or undefined");
+        throw new TypeError("Cannot read properties of null or undefined");
     }
 
     for (let i = 0; i < this.length; i++) {
@@ -44,7 +44,7 @@ Array.prototype.ourMap = function (callBack) {
     }
 
     if (this === null || this === undefined) {
-        throw new TypeError("Cannot reduce array on null or undefined");
+        throw new TypeError("Cannot read properties of null or undefined");
     }
 
     const newArray = [];
@@ -156,7 +156,7 @@ Array.prototype.ourFilter = function (callBack) {
     }
 
     if (this === null || this === undefined) {
-        throw new TypeError("Cannot reduce array on null or undefined");
+        throw new TypeError("Cannot read properties of null or undefined");
     }
 
     const result = [];
@@ -169,4 +169,132 @@ Array.prototype.ourFilter = function (callBack) {
 }
 
 const filtered = words.ourFilter((word) => word.length > 6);
-console.log(filtered)
+console.log(filtered);
+
+
+// ***********************************************************************
+// find
+
+// The find() method of Array instances returns the first element 
+// in the provided array that satisfies the provided testing function. 
+// If no values satisfy the testing function, undefined is returned.
+
+Array.prototype.ourFind = function (callBack) {
+    if (typeof callBack !== "function") {
+        throw new TypeError(`${callBack} is not a function`);
+    }
+
+    if (this === null || this === undefined) {
+        throw new TypeError("Cannot read properties of null or undefined");
+    }
+
+    for (let i = 0; i < this.length; i++) {
+        if (callBack.call(undefined, this[i], i, this)) {
+            return this[i];
+        }
+    }
+
+    return undefined;
+}
+
+
+// ***********************************************************************
+// findIndex
+
+// The findIndex() method of Array instances returns  index of the first element 
+// in the provided array that satisfies the provided testing function. 
+// If no values satisfy the testing function, -1 is returned.
+
+Array.prototype.ourFindIndex = function (callBack) {
+    if (typeof callBack !== "function") {
+        throw new TypeError(`${callBack} is not a function`);
+    }
+
+    if (this === null || this === undefined) {
+        throw new TypeError("Cannot read properties of null or undefined");
+    }
+
+    for (let i = 0; i < this.length; i++) {
+        if (callBack.call(undefined, this[i], i, this)) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
+const inventory = [
+    { name: "apples", quantity: 2 },
+    { name: "bananas", quantity: 0 },
+    { name: "cherries", quantity: 5 },
+];
+
+function isCherries(fruit) {
+    return fruit.name === "cherries";
+}
+
+console.log(inventory.ourFind(isCherries));
+console.log(inventory.ourFindIndex(isCherries));
+
+
+// ***********************************************************************
+// some
+
+// The some() method of Array instances tests whether at least one element in the array 
+// passes the test implemented by the provided function. 
+// It returns true if, in the array, it finds an element for which 
+// the provided function returns true; otherwise it returns false. 
+// It doesn't modify the array.
+
+Array.prototype.ourSome = function (callBack) {
+    if (typeof callBack !== "function") {
+        throw new TypeError(`${callBack} is not a function`);
+    }
+
+    if (this === null || this === undefined) {
+        throw new TypeError("Cannot read properties of null or undefined");
+    }
+
+    for (let i = 0; i < this.length; i++) {
+        if (callBack.call(undefined, this[i], i, this)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+// ***********************************************************************
+// every
+
+// The every() method of Array instances tests whether all elements 
+// in the array pass the test implemented by the provided function. 
+// It returns a Boolean value.
+
+Array.prototype.ourEvery = function (callBack) {
+    if (typeof callBack !== "function") {
+        throw new TypeError(`${callBack} is not a function`);
+    }
+
+    if (this === null || this === undefined) {
+        throw new TypeError("Cannot read properties of null or undefined");
+    }
+
+    let everyFlag = true;
+
+    for (let i = 0; i < this.length; i++) {
+        if (!callBack.call(undefined, this[i], i, this)) {
+            everyFlag = false;
+        }
+    }
+
+    return everyFlag;
+}
+
+
+const array = [1, 2, 3, 4, 5];
+const even = (element) => element % 2 === 0;
+console.log(array.ourSome(even));  // true
+console.log(array.ourEvery(even));  // true
