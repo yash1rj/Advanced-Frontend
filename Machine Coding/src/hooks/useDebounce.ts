@@ -66,7 +66,6 @@ export const useDebounce = (
 // Output:
 // "hello" //after 500 millisecond delay when user stops moving mouse
 
-
 // ***********************************************************************
 // Test Case 2: With immediate flag
 
@@ -75,7 +74,7 @@ export const useDebounce = (
 //   const print = () => {
 //     console.log("hello");
 //   };
-  
+
 //   // immediate
 //   const debounced = useDebounce(print, 500, true);
 
