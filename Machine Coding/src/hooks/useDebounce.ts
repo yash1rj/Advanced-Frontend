@@ -40,3 +40,56 @@ export const useDebounce = (
 
   return debouncedFunction;
 };
+
+// ***********************************************************************
+// Test Case 1: Without an immediate flag
+
+// Input:
+// const Example = () => {
+//   const print = () => {
+//     console.log("hello");
+//   };
+
+//   const debounced = useDebounce(print, 500);
+
+//   useEffect(() => {
+//     window.addEventListener("mousemove", debounced, false);
+
+//     return () => {
+//       window.removeEventListener("mousemove", debounced, false);
+//     };
+//   });
+
+//   return <></>;
+// };
+
+// Output:
+// "hello" //after 500 millisecond delay when user stops moving mouse
+
+
+// ***********************************************************************
+// Test Case 2: With immediate flag
+
+// Input:
+// const Example = () => {
+//   const print = () => {
+//     console.log("hello");
+//   };
+  
+//   // immediate
+//   const debounced = useDebounce(print, 500, true);
+
+//   useEffect(() => {
+//     window.addEventListener("mousemove", debounced, false);
+
+//     return () => {
+//       window.removeEventListener("mousemove", debounced, false);
+//     };
+//   });
+
+//   return <></>;
+// };
+
+// Output:
+// "hello" //immediately only once till the mouse moving is not stopped
+// "hello" //immediately again once till the mouse moving is not stopped
