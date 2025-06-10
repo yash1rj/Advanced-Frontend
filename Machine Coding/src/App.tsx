@@ -1,6 +1,7 @@
 import "./App.css";
+import ToastContainer from "./components/ToastContainer/ToastContainer";
 // import CustomModal from "./components/CustomModal/CustomModal";
-import TransferList from "./components/TransferList/TransferList";
+// import TransferList from "./components/TransferList/TransferList";
 // import DynamicFormFields from "./components/DynamicFormFields/DynamicFormFields";
 // import ProgressBar from "./components/ProgressBar/ProgressBar";
 // import FolderExplorer from "./components/FolderExplorer/FolderExplorer";
@@ -21,7 +22,8 @@ function App() {
       {/* <DynamicFormFields /> */}
       {/* <ProgressBar /> */}
       {/* <CustomModal /> */}
-      <TransferList />
+      {/* <TransferList /> */}
+      <ToastContainer />
     </>
   );
 }
