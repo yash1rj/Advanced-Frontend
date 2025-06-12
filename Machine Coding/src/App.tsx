@@ -1,5 +1,6 @@
 import "./App.css";
-import ToastContainer from "./components/ToastContainer/ToastContainer";
+import OTP from "./components/OTP/OTP";
+// import ToastContainer from "./components/ToastContainer/ToastContainer";
 // import CustomModal from "./components/CustomModal/CustomModal";
 // import TransferList from "./components/TransferList/TransferList";
 // import DynamicFormFields from "./components/DynamicFormFields/DynamicFormFields";
@@ -23,7 +24,8 @@ function App() {
       {/* <ProgressBar /> */}
       {/* <CustomModal /> */}
       {/* <TransferList /> */}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
+      <OTP />
     </>
   );
 }
