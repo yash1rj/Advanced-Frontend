@@ -1,5 +1,6 @@
 import "./App.css";
-import OTP from "./components/OTP/OTP";
+import Carousel from "./components/Carousel/Carousel";
+// import OTP from "./components/OTP/OTP";
 // import ToastContainer from "./components/ToastContainer/ToastContainer";
 // import CustomModal from "./components/CustomModal/CustomModal";
 // import TransferList from "./components/TransferList/TransferList";
@@ -25,7 +26,8 @@ function App() {
       {/* <CustomModal /> */}
       {/* <TransferList /> */}
       {/* <ToastContainer /> */}
-      <OTP />
+      {/* <OTP /> */}
+      <Carousel />
     </>
   );
 }
