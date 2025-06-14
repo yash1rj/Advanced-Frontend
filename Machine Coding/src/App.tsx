@@ -1,5 +1,6 @@
 import "./App.css";
-import Carousel from "./components/Carousel/Carousel";
+import CalcHistory from "./components/CalcHistory/CalcHistory";
+// import Carousel from "./components/Carousel/Carousel";
 // import OTP from "./components/OTP/OTP";
 // import ToastContainer from "./components/ToastContainer/ToastContainer";
 // import CustomModal from "./components/CustomModal/CustomModal";
@@ -27,7 +28,8 @@ function App() {
       {/* <TransferList /> */}
       {/* <ToastContainer /> */}
       {/* <OTP /> */}
-      <Carousel />
+      {/* <Carousel /> */}
+      <CalcHistory />
     </>
   );
 }
