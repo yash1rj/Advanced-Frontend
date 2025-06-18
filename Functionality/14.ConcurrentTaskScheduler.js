@@ -3,52 +3,121 @@
 // ***********************************************************************
 
 class ConcurrentTaskScheduler {
-    constructor(concurrency) {
+    constructor(concurrency, options = {}) {
         this.concurrency = Number(concurrency);
         this.runningTasks = 0;
         this.__waitingQueue = [];
+        this.taskIdCounter = 0;
+
+        // Options
+        this.enableLogging = options.enableLogging || false;
+
+        // Event callbacks
+        this.onTaskStart = options.onTaskStart || null;
+        this.onTaskComplete = options.onTaskComplete || null;
+        this.onTaskError = options.onTaskError || null;
     }
 
     getNextTask() {
         if (this.runningTasks < this.concurrency && this.__waitingQueue.length > 0) {
-            const nextTask = this.__waitingQueue.shift();
-            nextTask();
+            const nextTaskWrapper = this.__waitingQueue.shift();
+            nextTaskWrapper.execute();
         }
     }
 
-    addTask(task) {
+    addTask(task, options = {}) {
+        const taskId = ++this.taskIdCounter;
+        const priority = options.priority || 0;
         return new Promise((resolve, reject) => {
 
-            async function __taskRunner() {
-                this.runningTasks += 1;
-                try {
-                    const result = await task();
-                    console.log("Result : ", result);
-                    resolve(result);
-                } catch (err) {
-                    console.log(`Task failed`, err);
-                    reject(err);
-                } finally {
-                    this.runningTasks -= 1;
-                    // Check bandwidth and execute task if available
-                    this.getNextTask();
+            const taskWrapper = {
+                id: taskId,
+                priority,
+                createdAt: Date.now(),
+                execute: async () => {
+                    this.runningTasks += 1;
+                    const startTime = Date.now();
+
+                    // Notify task start
+                    if (this.onTaskStart) {
+                        this.onTaskStart({ taskId, startTime });
+                    }
+
+                    if (this.enableLogging) {
+                        console.log(`🚀 Starting task ${taskId}`);
+                    }
+
+                    try {
+                        const result = await task();
+
+                        const duration = Date.now() - startTime;
+
+                        if (this.enableLogging) {
+                            console.log(`✅ Task ${taskId} completed in ${duration}ms:`, result);
+                        }
+
+                        // Notify task completion
+                        if (this.onTaskComplete) {
+                            this.onTaskComplete({ taskId, result, duration });
+                        }
+
+                        console.log("Result : ", result);
+                        resolve(result);
+                    } catch (err) {
+                        const duration = Date.now() - startTime;
+
+                        if (this.enableLogging) {
+                            console.log(`❌ Task ${taskId} failed after ${duration}ms:`, err.message);
+                        }
+
+                        // Notify task error
+                        if (this.onTaskError) {
+                            this.onTaskError({ taskId, error: err, duration });
+                        }
+
+                        console.log(`Task failed`, err);
+                        reject(err);
+                    } finally {
+                        this.runningTasks -= 1;
+                        // Check bandwidth and execute task if available
+                        this.getNextTask();
+                    }
                 }
-            }
+            };
 
             if (this.runningTasks < this.concurrency) {
-                __taskRunner.call(this);
+                taskWrapper.execute();
             } else {
-                this.__waitingQueue.push(__taskRunner.bind(this));
+                // Insert based on priority (higher priority first)
+                this.insertByPriority(taskWrapper);
             }
         });
+    }
+
+    // Insert task by priority
+    insertByPriority(taskWrapper) {
+        const insertIndex = this.__waitingQueue.findIndex(
+            t => t.priority < taskWrapper.priority
+        );
+
+        if (insertIndex === -1) {
+            this.__waitingQueue.push(taskWrapper);
+        } else {
+            this.__waitingQueue.splice(insertIndex, 0, taskWrapper);
+        }
     }
 }
 
 // ***********************************************************************
 
-const scheduler = new ConcurrentTaskScheduler(2);
+const scheduler = new ConcurrentTaskScheduler(2, {
+    enableLogging: true,
+    onTaskStart: ({ taskId }) => console.log(`📋 Task ${taskId} queued for execution`),
+    onTaskComplete: ({ taskId, duration }) => console.log(`📊 Task ${taskId} metrics: ${duration}ms`),
+    onTaskError: ({ taskId, error }) => console.log(`🚨 Task ${taskId} error logged: ${error.message}`)
+});
 
-scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 1'), 1000)));
-scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 2'), 1000)));
-scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 3'), 1000)));
-scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 4'), 1000)));
+scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 1'), 1000)), { priority: 1 });
+scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 2'), 1000)), { priority: 5 });
+scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 3'), 1000)), { priority: 4 });
+scheduler.addTask(() => new Promise((res) => setTimeout(() => res('Task 4'), 1000)), { priority: 1 });
