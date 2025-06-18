@@ -122,6 +122,11 @@ class ConcurrentTaskScheduler {
             totalProcessed: this.completedTasks + this.failedTasks
         };
     }
+
+    // Clear the queue
+    clearQueue() {
+        this.__waitingQueue = [];
+    }
 }
 
 // ***********************************************************************
