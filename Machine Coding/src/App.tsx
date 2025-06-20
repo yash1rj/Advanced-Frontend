@@ -1,5 +1,6 @@
 import "./App.css";
-import CalcHistory from "./components/CalcHistory/CalcHistory";
+import Counter from "./components/CustomUseEffectCounter/Counter";
+// import CalcHistory from "./components/CalcHistory/CalcHistory";
 // import Carousel from "./components/Carousel/Carousel";
 // import OTP from "./components/OTP/OTP";
 // import ToastContainer from "./components/ToastContainer/ToastContainer";
@@ -29,7 +30,8 @@ function App() {
       {/* <ToastContainer /> */}
       {/* <OTP /> */}
       {/* <Carousel /> */}
-      <CalcHistory />
+      {/* <CalcHistory /> */}
+      <Counter />
     </>
   );
 }
