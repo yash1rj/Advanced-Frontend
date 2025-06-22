@@ -1,5 +1,6 @@
 import "./App.css";
-import Counter from "./components/CustomUseEffectCounter/Counter";
+import InfiniteScroll from "./components/InfiniteScroll/InfiniteScroll";
+// import Counter from "./components/CustomUseEffectCounter/Counter";
 // import CalcHistory from "./components/CalcHistory/CalcHistory";
 // import Carousel from "./components/Carousel/Carousel";
 // import OTP from "./components/OTP/OTP";
@@ -31,7 +32,8 @@ function App() {
       {/* <OTP /> */}
       {/* <Carousel /> */}
       {/* <CalcHistory /> */}
-      <Counter />
+      {/* <Counter /> */}
+      <InfiniteScroll />
     </>
   );
 }
