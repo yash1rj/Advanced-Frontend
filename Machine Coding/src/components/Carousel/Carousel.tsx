@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchImagesList } from "../../api/fetchImages";
 import styled from "styled-components";
-
-type ImageData = {
-  id: string;
-  download_url: string;
-  author: string;
-};
+import { ImageData } from "../../api/api_types";
 
 const ImageContainer = styled.div`
   display: flex;
