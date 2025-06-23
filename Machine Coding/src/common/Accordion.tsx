@@ -20,6 +20,11 @@ const AccordionHeader = styled.button<{ isOpen: boolean }>`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const AccordionContent = styled.div`
@@ -34,10 +39,12 @@ const AccordionTrigger = styled.button`
 
 const Accordion = ({
   items = [],
+  allowMultiple = false,
   defaultOpenIndexes = [],
   styleConfig = {},
 }: {
   items: any[];
+  allowMultiple?: boolean;
   defaultOpenIndexes: number[];
   styleConfig?: {
     containerCustomClass?: string;
@@ -48,7 +55,26 @@ const Accordion = ({
 }) => {
   const [openIndexes, setOpenIndexes] = useState(new Set(defaultOpenIndexes));
 
-  const toggleItem = (itemIdx: number) => {};
+  const toggleItem = (itemIdx: number) => {
+    const newOpenIndexes = new Set(openIndexes);
+
+    if (allowMultiple) {
+      if (newOpenIndexes.has(itemIdx)) {
+        newOpenIndexes.delete(itemIdx);
+      } else {
+        newOpenIndexes.add(itemIdx);
+      }
+    } else {
+      if (newOpenIndexes.has(itemIdx)) {
+        newOpenIndexes.clear();
+      } else {
+        newOpenIndexes.clear();
+        newOpenIndexes.add(itemIdx);
+      }
+    }
+
+    setOpenIndexes(newOpenIndexes);
+  };
 
   const isOpen = (index: number) => openIndexes.has(index);
 
@@ -67,9 +93,9 @@ const Accordion = ({
           >
             <span>{item.title}</span>
             {isOpen(index) ? (
-              <AccordionTrigger>-</AccordionTrigger>
+              <AccordionTrigger>&#8607;</AccordionTrigger>
             ) : (
-              <AccordionTrigger>+</AccordionTrigger>
+              <AccordionTrigger>&#8609;</AccordionTrigger>
             )}
           </AccordionHeader>
 

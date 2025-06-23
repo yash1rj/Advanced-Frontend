@@ -5,3 +5,13 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 }
+
+.custom-accordion-header {
+  background: green !important;
+  color: white !important;
+}
+
+.custom-accordion-content {
+  background: greenyellow !important;
+  color: black !important;
+}

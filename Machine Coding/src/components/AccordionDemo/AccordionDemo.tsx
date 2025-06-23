@@ -47,6 +47,20 @@ const AccordionDemo = () => {
         </h3>
         <Accordion items={accordionItems} defaultOpenIndexes={[0]} />
       </section>
+      <section>
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+          Multiple Items Open
+        </h3>
+        <Accordion
+          items={accordionItems}
+          allowMultiple={true}
+          defaultOpenIndexes={[1, 2]}
+          styleConfig={{
+            headerCustomClass: "custom-accordion-header",
+            contentCustomClass: "custom-accordion-content",
+          }}
+        />
+      </section>
     </>
   );
 };
