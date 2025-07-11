@@ -1,5 +1,6 @@
 import "./App.css";
-import AccordionDemo from "./components/AccordionDemo/AccordionDemo";
+import StopWatch from "./components/StopWatch/StopWatch";
+// import AccordionDemo from "./components/AccordionDemo/AccordionDemo";
 // import InfiniteScroll from "./components/InfiniteScroll/InfiniteScroll";
 // import Counter from "./components/CustomUseEffectCounter/Counter";
 // import CalcHistory from "./components/CalcHistory/CalcHistory";
@@ -35,7 +36,8 @@ function App() {
       {/* <CalcHistory /> */}
       {/* <Counter /> */}
       {/* <InfiniteScroll /> */}
-      <AccordionDemo />
+      {/* <AccordionDemo /> */}
+      <StopWatch />
     </>
   );
 }
