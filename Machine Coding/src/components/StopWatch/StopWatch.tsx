@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const StopWatchWrapper = styled.div`
@@ -48,18 +49,77 @@ const ActionBtn = styled.button<{ btnType?: string }>`
 `;
 
 const StopWatch = () => {
-  const handlePause = () => {};
-  const handleReset = () => {};
+  const [timer, setTimer] = useState({
+    hour: "",
+    minute: "",
+    second: "",
+  });
+
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    setTimer((prevTimer) => {
+      const timerCopy = {
+        ...prevTimer,
+        ...(field === "hour" && { hour: e.target.value }),
+        ...(field === "minute" && { minute: e.target.value }),
+        ...(field === "second" && { second: e.target.value }),
+      };
+
+      timerCopy.minute = String(
+        Number(timerCopy.minute) + Math.floor(Number(timerCopy.second) / 60)
+      );
+      timerCopy.second = String(Number(timerCopy.second) % 60);
+
+      timerCopy.hour = String(
+        Number(timerCopy.hour) + Math.floor(Number(timerCopy.minute) / 60)
+      );
+      timerCopy.minute = String(Number(timerCopy.minute) % 60);
+
+      return timerCopy;
+    });
+  };
+
+  const handleTimerAction = () => {
+    setIsTimerRunning((prevState) => !prevState);
+  };
+
+  const handleReset = () => {
+    setIsTimerRunning(false);
+    setTimer({
+      hour: "",
+      minute: "",
+      second: "",
+    });
+  };
   return (
     <StopWatchWrapper>
       <div style={{ display: "flex" }}>
-        <TimerBlock type="number" placeholder="HH" />
-        <TimerBlock type="number" placeholder="MM" />
-        <TimerBlock type="number" placeholder="ss" />
+        <TimerBlock
+          onChange={(e) => handleChange(e, "hour")}
+          type="number"
+          placeholder="HH"
+          value={timer.hour}
+        />
+        <TimerBlock
+          onChange={(e) => handleChange(e, "minute")}
+          type="number"
+          placeholder="MM"
+          value={timer.minute}
+        />
+        <TimerBlock
+          onChange={(e) => handleChange(e, "second")}
+          type="number"
+          placeholder="ss"
+          value={timer.second}
+        />
       </div>
       <div style={{ display: "flex", marginTop: "25px" }}>
-        <ActionBtn type="button" btnType="pause" onClick={handlePause}>
-          Pause
+        <ActionBtn type="button" btnType="pause" onClick={handleTimerAction}>
+          {isTimerRunning ? "Pause" : "Start"}
         </ActionBtn>
         <ActionBtn type="button" btnType="reset" onClick={handleReset}>
           Reset
