@@ -1,5 +1,6 @@
 import "./App.css";
-import StopWatch from "./components/StopWatch/StopWatch";
+import InteractiveGridGame from "./components/InteractiveGridGame/InteractiveGridGame";
+// import StopWatch from "./components/StopWatch/StopWatch";
 // import AccordionDemo from "./components/AccordionDemo/AccordionDemo";
 // import InfiniteScroll from "./components/InfiniteScroll/InfiniteScroll";
 // import Counter from "./components/CustomUseEffectCounter/Counter";
@@ -37,7 +38,8 @@ function App() {
       {/* <Counter /> */}
       {/* <InfiniteScroll /> */}
       {/* <AccordionDemo /> */}
-      <StopWatch />
+      {/* <StopWatch /> */}
+      <InteractiveGridGame />
     </>
   );
 }
